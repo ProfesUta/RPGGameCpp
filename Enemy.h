@@ -5,5 +5,7 @@ struct Enemy
 {
 	std::string name;
 	int hp;
+	int maxHp;
 	int attack;
+	int xpReward;
 };

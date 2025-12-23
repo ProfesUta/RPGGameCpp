@@ -5,6 +5,37 @@
 #include "Player.h"
 #include "Enemy.h"
 
+Enemy createRandomEnemy() {
+
+	int roll = std::rand() % 3;
+
+	Enemy enemy;
+
+	if (roll == 0)
+	{
+		enemy.name = "Goblin";
+		enemy.maxHp = 50;
+		enemy.attack = 8;
+		enemy.xpReward = 50;
+	}
+	else if (roll == 1)
+	{
+		enemy.name = "Orc";
+		enemy.maxHp = 80;
+		enemy.attack = 12;
+		enemy.xpReward = 75;
+	}
+	else
+	{
+		enemy.name = "Slime";
+		enemy.maxHp = 40;
+		enemy.attack = 6;
+		enemy.xpReward = 40;
+	}
+
+	enemy.hp = enemy.maxHp;
+	return enemy;
+}
 
 void showStats(const Player& player, const Enemy& enemy) {
 
@@ -65,115 +96,125 @@ int main()
 
 	// Create Enemy with starting stats
 
-	Enemy enemy;
-	enemy.name = "Goblin";
-	enemy.hp = 50;
-	enemy.attack = 8;
-
-	std::cout << "\nA wild " << enemy.name << " appears!\n";
-
-	// Battle loop
-
-	while (player.hp > 0 && enemy.hp > 0)
+	bool gameRunning = true;
+	while (gameRunning)
 	{
-		showStats(player, enemy);
+		Enemy enemy = createRandomEnemy();
+		std::cout << "\nA wild " << enemy.name << " appears!\n";
 
-		std::cout << "Choose your action:\n";
-		std::cout << "1. Attack\n";
-		std::cout << "2. Use Item\n";
-		std::cout << "3. Run\n";
-		std::cout << "> ";
+		// Battle loop
 
-		int choice;
-		std::cin >> choice;
-
-		if (choice == 3)
+		while (player.hp > 0 && enemy.hp > 0)
 		{
-			std::cout << "You ran away!\n";
-			return 0;
-		}
+			showStats(player, enemy);
 
-		bool playerUsedItem = false;
-
-		if (choice == 2)
-		{
-			if (player.inventory.empty())
-			{
-				std::cout << "Your inventory is empty!\n";
-				continue;
-			}
-
-			std::cout << "\nInventory:\n";
-			for (size_t i = 0; i < player.inventory.size(); i++)
-			{
-				std::cout << i + 1 << ". " << player.inventory[i].name << "\n";
-			}
-
+			std::cout << "Choose your action:\n";
+			std::cout << "1. Attack\n";
+			std::cout << "2. Use Item\n";
+			std::cout << "3. Run\n";
 			std::cout << "> ";
-			size_t itemChoice;
-			std::cin >> itemChoice;
 
-			if (itemChoice < 1 || itemChoice > player.inventory.size())
+			int choice;
+			std::cin >> choice;
+
+			if (choice == 3)
 			{
-				std::cout << "Invalid Item!\n";
-				continue;
+				std::cout << "You ran away!\n";
+				return 0;
 			}
 
-			Item item = player.inventory[itemChoice - 1];
+			bool playerUsedItem = false;
 
-			if (item.type == ItemType::Potion)
+			if (choice == 2)
 			{
-				player.hp += item.power;
-				if (player.hp > player.maxHp)
+				if (player.inventory.empty())
 				{
-					player.hp = player.maxHp;
+					std::cout << "Your inventory is empty!\n";
+					continue;
 				}
 
-				std::cout << "You used " << item.name << " and recovered " << item.power << " HP!\n";
-				player.inventory.erase(player.inventory.begin() + (itemChoice - 1));
-				playerUsedItem = true;
+				std::cout << "\nInventory:\n";
+				for (size_t i = 0; i < player.inventory.size(); i++)
+				{
+					std::cout << i + 1 << ". " << player.inventory[i].name << "\n";
+				}
+
+				std::cout << "> ";
+				size_t itemChoice;
+				std::cin >> itemChoice;
+
+				if (itemChoice < 1 || itemChoice > player.inventory.size())
+				{
+					std::cout << "Invalid Item!\n";
+					continue;
+				}
+
+				Item item = player.inventory[itemChoice - 1];
+
+				if (item.type == ItemType::Potion)
+				{
+					player.hp += item.power;
+					if (player.hp > player.maxHp)
+					{
+						player.hp = player.maxHp;
+					}
+
+					std::cout << "You used " << item.name << " and recovered " << item.power << " HP!\n";
+					player.inventory.erase(player.inventory.begin() + (itemChoice - 1));
+					playerUsedItem = true;
+				}
+
+				// enemy still attacks after item use
 			}
-			
-			// enemy still attacks after item use
-		}
 
-		if (!playerUsedItem)
-		{
-			int playerDamage = randomDamage(player.attack);
-			enemy.hp -= playerDamage;
-			std::cout << "You hit the " << enemy.name << " for " << playerDamage << " damage!\n";
-		}
-
-		if (enemy.hp <= 0)
-		{
-			std::cout << "\nYou defeated the " << enemy.name << "!\n";
-
-			int gainedXP = 50;
-			player.xp += gainedXP;
-			std::cout << "You gained " << gainedXP << " XP!\n";
-
-			if (player.xp >= player.xpToNextLevel)
+			if (!playerUsedItem)
 			{
-				levelUp(player);
+				int playerDamage = randomDamage(player.attack);
+				enemy.hp -= playerDamage;
+				std::cout << "You hit the " << enemy.name << " for " << playerDamage << " damage!\n";
 			}
 
-			break;
+			if (enemy.hp <= 0)
+			{
+				std::cout << "\nYou defeated the " << enemy.name << "!\n";
+
+				player.xp += enemy.xpReward;
+				std::cout << "You gained " << enemy.xpReward << " XP!\n";
+
+				if (player.xp >= player.xpToNextLevel)
+				{
+					levelUp(player);
+				}
+
+				break;
+			}
+
+			int enemyDamage = randomDamage(enemy.attack);
+			player.hp -= enemyDamage;
+			std::cout << "The " << enemy.name << " hits you for " << enemyDamage << " damage!\n";
+
+			if (player.hp <= 0)
+			{
+				std::cout << "\nYou were defeated...\n";
+				break;
+			}
 		}
 
-		int enemyDamage = randomDamage(enemy.attack);
-		player.hp -= enemyDamage;
-		std::cout << "The " << enemy.name << " hits you for " << enemyDamage << " damage!\n";
+		std::cout << "\nFight another enemy?\n";
+		std::cout << "1. Yes\n2. No\n> ";
 
-		if (player.hp <= 0)
-		{
-			std::cout << "\nYou were defeated...\n";
-			break;
+		int again;
+		std::cin >> again;
+
+		if (again != 1) {
+			gameRunning = false;
 		}
+
 	}
 
-	std::cout << "\n=== GAME OVER ===\n";
+	
 
-
-
+	std::cout << "\nThanks for playing!\n";
 	return 0;
+
 }
