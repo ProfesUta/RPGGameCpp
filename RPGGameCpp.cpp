@@ -9,13 +9,29 @@
 void showStats(const Player& player, const Enemy& enemy) {
 
 	std::cout << "\n=== BATTLE STATUS ===\n";
-	std::cout << player.name << " HP: " << player.hp << "\n";
+	std::cout << player.name << " HP: " << player.hp << "/" << player.maxHp << " | LVL: " << player.level << " | XP: " << player.xp << "/" << player.xpToNextLevel << "\n";
 	std::cout << enemy.name << " HP: " << enemy.hp << "\n\n";
 }
 
 int randomDamage(int base) {
 
 	return base + (std::rand() % 5);     // Random damage variation
+}
+
+void levelUp(Player& player) {
+
+	player.level++;
+	player.xp = 0;
+	player.xpToNextLevel += 50;
+
+	player.maxHp += 20;
+	player.attack += 5;
+	player.hp = player.maxHp;
+
+	std::cout << "\n  Level UP!  \n";
+	std::cout << "You are now Level " << player.level << "!\n";
+	std::cout << "Max HP increased to " << player.maxHp << "\n";
+	std::cout << "Attack increased to " << player.attack << "\n\n";
 }
 
 
@@ -32,6 +48,8 @@ int main()
 	std::getline(std::cin, player.name);
 
 	player.level = 1;
+	player.xp = 0;
+	player.xpToNextLevel = 100;
 	player.maxHp = 100;
 	player.hp = player.maxHp;
 	player.attack = 10;
@@ -72,6 +90,16 @@ int main()
 		if (enemy.hp <= 0)
 		{
 			std::cout << "\nYou defeated the " << enemy.name << "!\n";
+
+			int gainedXP = 50;
+			player.xp += gainedXP;
+			std::cout << "You gained " << gainedXP << " XP!\n";
+
+			if (player.xp >= player.xpToNextLevel)
+			{
+				levelUp(player);
+			}
+
 			break;
 		}
 

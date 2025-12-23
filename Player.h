@@ -8,4 +8,6 @@ struct Player
 	int maxHp;
 	int attack;
 	int level;
+	int xp;
+	int xpToNextLevel;
 };
