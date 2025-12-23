@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <vector>
+#include "Item.h"
 
 struct Player
 {
@@ -10,4 +12,6 @@ struct Player
 	int level;
 	int xp;
 	int xpToNextLevel;
+
+	std::vector<Item> inventory;
 };

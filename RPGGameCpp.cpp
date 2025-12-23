@@ -54,6 +54,15 @@ int main()
 	player.hp = player.maxHp;
 	player.attack = 10;
 
+	// creating potion and pushing into players inventory
+
+	Item potion;
+	potion.name = "Health Potion";
+	potion.type = ItemType::Potion;
+	potion.power = 30;
+
+	player.inventory.push_back(potion);
+
 	// Create Enemy with starting stats
 
 	Enemy enemy;
@@ -71,21 +80,69 @@ int main()
 
 		std::cout << "Choose your action:\n";
 		std::cout << "1. Attack\n";
-		std::cout << "2. Run\n";
+		std::cout << "2. Use Item\n";
+		std::cout << "3. Run\n";
 		std::cout << "> ";
 
 		int choice;
 		std::cin >> choice;
 
-		if (choice == 2)
+		if (choice == 3)
 		{
 			std::cout << "You ran away!\n";
 			return 0;
 		}
 
-		int playerDamage = randomDamage(player.attack);
-		enemy.hp -= playerDamage;
-		std::cout << "You hit the " << enemy.name << " for " << playerDamage << " damage!\n";
+		bool playerUsedItem = false;
+
+		if (choice == 2)
+		{
+			if (player.inventory.empty())
+			{
+				std::cout << "Your inventory is empty!\n";
+				continue;
+			}
+
+			std::cout << "\nInventory:\n";
+			for (size_t i = 0; i < player.inventory.size(); i++)
+			{
+				std::cout << i + 1 << ". " << player.inventory[i].name << "\n";
+			}
+
+			std::cout << "> ";
+			size_t itemChoice;
+			std::cin >> itemChoice;
+
+			if (itemChoice < 1 || itemChoice > player.inventory.size())
+			{
+				std::cout << "Invalid Item!\n";
+				continue;
+			}
+
+			Item item = player.inventory[itemChoice - 1];
+
+			if (item.type == ItemType::Potion)
+			{
+				player.hp += item.power;
+				if (player.hp > player.maxHp)
+				{
+					player.hp = player.maxHp;
+				}
+
+				std::cout << "You used " << item.name << " and recovered " << item.power << " HP!\n";
+				player.inventory.erase(player.inventory.begin() + (itemChoice - 1));
+				playerUsedItem = true;
+			}
+			
+			// enemy still attacks after item use
+		}
+
+		if (!playerUsedItem)
+		{
+			int playerDamage = randomDamage(player.attack);
+			enemy.hp -= playerDamage;
+			std::cout << "You hit the " << enemy.name << " for " << playerDamage << " damage!\n";
+		}
 
 		if (enemy.hp <= 0)
 		{
