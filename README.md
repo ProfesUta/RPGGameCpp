@@ -29,13 +29,13 @@ This project is focused on learning:
 
 ---
 
-## 👤 Author
+## Author
 
 **Uta**  
 Beginner C++ developer learning through hands-on projects.
 
 ---
 
-## 📜 License
+## License
 
 This project is open-source and free to use for learning purposes.
