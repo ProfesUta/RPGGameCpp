@@ -1,16 +1,20 @@
 #pragma once
 #include <string>
 
-enum class ItemType {
+class Player; // Forward declaration
 
-	Potion
-
-};
-
-struct Item
+class Item
 {
+private:
 	std::string name;
-	ItemType type;
-	int power;
+
+public:
+	Item(std::string n);
+	virtual ~Item() = default;
+	
+	std::string getName() const;
+
+	virtual void use(Player& player) = 0;
+
 };
 
