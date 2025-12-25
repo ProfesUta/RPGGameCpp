@@ -1,4 +1,8 @@
 #include "EnemyDatabase.h"
+#include "ItemDatabase.h"
+
+#include <iostream>
+#include <cstdlib>
 
 Enemy EnemyDatabase::createGoblin() {
 	return Enemy("Goblin", 30, 6, 25);
@@ -28,9 +32,6 @@ Enemy EnemyDatabase::createWolf() {
 
 
 
-
-
-
 Enemy EnemyDatabase::createRandomEnemy() {
 	int roll = rand() % 4;
 
@@ -45,5 +46,26 @@ Enemy EnemyDatabase::createRandomEnemy() {
 			return createWolf();
 		default:
 			return createSlime();
+	}
+}
+
+void EnemyDatabase::dropLoot(const Enemy& enemy, Player& player) {
+	int roll = rand() % 100;
+
+	if (enemy.getName() == "Slime")
+	{
+		if (roll < 25)
+		{
+			player.addItem(ItemDatabase::createManaPotion());
+			std::cout << "The Slime dropped a Mana Potion!\n";
+		}
+	}
+	else if (enemy.getName() == "Orc")
+	{
+		if (roll < 25)
+		{
+			player.addItem(ItemDatabase::createHealthPotion());
+			std::cout << "The Orc dropped a Health Potion!\n";
+		}
 	}
 }

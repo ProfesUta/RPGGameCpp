@@ -1,10 +1,12 @@
 #pragma once
 #include "Item.h"
 
-class HealthPotion : public Item {
-	int healAmount;
+class ManaPotion : public Item {
+	int manaAmount;
 
 public:
-	HealthPotion(int amount);
+	ManaPotion(int amount);
+
 	void use(Player& player) override;
+
 };

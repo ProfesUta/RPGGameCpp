@@ -82,6 +82,7 @@ int main()
 		{
 			std::cout << "\nYou defeated the " << enemy.getName() << "\n";
 			player.gainXp(enemy.getXPReward());
+			EnemyDatabase::dropLoot(enemy, player);
 		}
 		else if (playerRanAway)
 		{

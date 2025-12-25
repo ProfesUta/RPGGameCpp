@@ -2,7 +2,7 @@
 #include "Player.h"
 #include <iostream>
 
-HealthPotion::HealthPotion(int heal) : Item("Health Potion"), healAmount(heal) {}
+HealthPotion::HealthPotion(int amount) : Item("Health Potion", ItemType::HEALTH_POTION), healAmount(amount) {}
 
 void HealthPotion::use(Player& player) {
 	player.heal(healAmount);
