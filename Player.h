@@ -13,7 +13,9 @@ private:
 	int maxHp;
 	int hp;
 	int attackPower;
-	std::vector<std::shared_ptr<Item>> inventory;
+	int gold;
+	std::vector<std::unique_ptr<Item>> inventory;
+
 
 public:
 	Player(const std::string& name);
@@ -26,7 +28,7 @@ public:
 	int getLevel() const;
 	int getXp() const;
 	int getXpToNext() const;
-	int getInventorySize() const;
+	size_t getInventorySize() const;
 
 	// Gameplay
 
@@ -41,5 +43,16 @@ public:
 	void addItem(std::unique_ptr<Item> item);
 	void useItem(int index);
 	void showInventory() const;
+	const std::vector<std::unique_ptr<Item>>& getInventory() const;
+
+	// gold
+
+	int getGold() const;
+	void addGold(int amount);
+
+	// save/load System
+
+	void setFromSave(const std::string& name, int level, int xp, int hp, int maxHp, int gold);
+
 
 };

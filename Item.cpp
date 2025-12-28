@@ -1,13 +1,11 @@
 #include "Item.h"
 
-Item::Item(const std::string& name, ItemType type) : name(name), type(type) {}
-
-Item::~Item() = default;
+Item::Item(const std::string& name, ItemID id) : name(name), id(id) {}
 
 std::string Item::getName() const {
 	return name;
 }
 
-ItemType Item::getType() const {
-	return type;
+ItemID Item::getID() const {
+	return id;
 }

@@ -4,7 +4,7 @@
 class Player; // Forward declaration
 
 
-enum class ItemType
+enum class ItemID
 {
 	HEALTH_POTION,
 	MANA_POTION
@@ -15,17 +15,18 @@ class Item
 {
 protected:
 	std::string name;
-	ItemType type;
+	ItemID id;
+
 
 public:
-	Item(const std::string& name, ItemType type);
+	Item(const std::string& name, ItemID id);
 
-	virtual ~Item();
+	virtual ~Item() = default;
 
 	virtual void use(Player& player) = 0;
 
 	std::string getName() const;
-	ItemType getType() const;
+	ItemID getID() const;
 
 
 };

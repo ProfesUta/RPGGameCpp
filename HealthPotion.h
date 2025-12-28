@@ -2,9 +2,7 @@
 #include "Item.h"
 
 class HealthPotion : public Item {
-	int healAmount;
-
 public:
-	HealthPotion(int amount);
+	HealthPotion();
 	void use(Player& player) override;
 };

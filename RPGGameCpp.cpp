@@ -5,13 +5,24 @@
 #include "Enemy.h"
 #include "EnemyDatabase.h"
 #include "ItemDatabase.h"
+#include "SaveSystem.h"
 
 int main()
 {
 	srand(static_cast<unsigned>(time(nullptr)));
 
 	Player player("Hero");
-	player.addItem(ItemDatabase::createHealthPotion());
+
+	std::cout << "1.New Game\n2. Load Game\n> ";
+	int startChoice;
+	std::cin >> startChoice;
+	if (startChoice == 2)
+	{
+		if (!SaveSystem::load(player, "save.txt"))
+		{
+			std::cout << "Starting New Game.\n";
+		}
+	}
 
 	bool playing = true;
 
@@ -83,6 +94,7 @@ int main()
 			std::cout << "\nYou defeated the " << enemy.getName() << "\n";
 			player.gainXp(enemy.getXPReward());
 			EnemyDatabase::dropLoot(enemy, player);
+			SaveSystem::save(player, "save.txt");
 		}
 		else if (playerRanAway)
 		{
@@ -102,6 +114,7 @@ int main()
 		if (next != 1)
 		{
 			playing = false;
+			SaveSystem::save(player, "save.txt");
 		}
 
 	}

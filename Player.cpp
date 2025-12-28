@@ -2,7 +2,7 @@
 #include "HealthPotion.h"
 #include <iostream>
 
-Player::Player(const std::string& name) : name(name), level(1), xp(0), xpToNext(100), maxHp(100), hp(100), attackPower(12) {}
+Player::Player(const std::string& name) : name(name), level(1), xp(0), xpToNext(100), maxHp(100), hp(100), attackPower(12), gold(0){}
 
 // Getters
 
@@ -93,4 +93,35 @@ void Player::showInventory() const {
 	}
 }
 
-int Player::getInventorySize() const { return inventory.size(); }
+size_t Player::getInventorySize() const { return inventory.size(); }
+
+const std::vector<std::unique_ptr<Item>>& Player::getInventory() const {
+	return inventory;
+}
+
+
+// gold
+
+
+int Player::getGold() const {
+
+	return gold;
+}
+
+void Player::addGold(int amount) {
+	gold += amount;
+}
+
+
+// save/load System
+
+
+void Player::setFromSave(const std::string& n, int lvl, int x, int h, int mHp, int g) {
+	name = n;
+	level = lvl;
+	xp = x;
+	hp = h;
+	maxHp = mHp;
+	gold = g;
+	inventory.clear();
+}
