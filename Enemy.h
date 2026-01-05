@@ -14,6 +14,7 @@ public:
 
     std::string getName() const;
     int getHP() const;
+    int getMaxHP() const;
     int getAttack() const;
     int getXPReward() const;
 

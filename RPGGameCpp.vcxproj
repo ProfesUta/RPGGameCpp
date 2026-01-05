@@ -133,24 +133,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BattleScene.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyDatabase.cpp" />
+    <ClCompile Include="EnemyView.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="HealthPotion.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemDatabase.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ManaPotion.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerView.cpp" />
     <ClCompile Include="SaveSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BattleScene.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyDatabase.h" />
+    <ClInclude Include="EnemyView.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="HealthPotion.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemDatabase.h" />
     <ClInclude Include="ManaPotion.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerView.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SaveSystem.h" />
   </ItemGroup>
